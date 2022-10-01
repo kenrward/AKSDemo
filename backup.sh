@@ -1,4 +1,6 @@
 #!/bin/bash
+# https://github.com/holobuilder/docker-mongodump-azure
+
 set -e
 
 DATETIME=`date +"%Y-%m-%d-%H-%M-%S"`
