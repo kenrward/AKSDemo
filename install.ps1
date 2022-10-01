@@ -15,3 +15,6 @@ kubectl get nodes
 
 # https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-cli#code-try-6
 # https://kubernetes.io/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/
+
+# Error Lookup
+# https://komodor.com/learn/how-to-fix-createcontainerconfigerror-and-createcontainer-errors/
