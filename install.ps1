@@ -38,3 +38,21 @@ az vm create `
   --image Canonical:UbuntuServer:16.04.0-LTS:16.04.201608300 `
   --admin-username azureuser `
   --generate-ssh-keys
+
+$prefix = "Eth"
+  az group create -n "${prefix}-RG" --location eastus
+
+  az deployment group create -n "${prefix}-Deployment" -g "${prefix}-RG" --template-file .\deploy.bicep 
+
+
+## NEW
+
+
+az network vnet create `
+    --resource-group "${prefix}-RG" `
+    --name "aksd-vnet" `
+    --address-prefixes 192.168.0.0/16 `
+    --subnet-name deAKSSubnet `
+    --subnet-prefix 192.168.1.0/24
+
+$subnetID=(az network vnet subnet show --resource-group "${prefix}-RG" --vnet-name "aksd-vnet" --name deAKSSubnet --query id -o tsv)

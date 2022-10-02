@@ -1,5 +1,8 @@
+@description('Prefix for resources.')
+param prefix string = 'aksd'
+
 @description('The name of you Virtual Machine.')
-param vmName string = 'simpleLinuxVM'
+param vmName string = 'mongodbVM'
 
 @description('Username for the Virtual Machine.')
 param adminUsername string = 'mntgoat'
@@ -34,18 +37,20 @@ param location string = resourceGroup().location
 param vmSize string = 'Standard_B2s'
 
 @description('Name of the VNET')
-param virtualNetworkName string = 'vNet'
+param virtualNetworkName string = toLower('${prefix}-vnet')
 
 @description('Name of the subnet in the virtual network')
-param subnetName string = 'Subnet'
+param subnetName string = toLower('${prefix}-vm-subnet')
 
 @description('Name of the Network Security Group')
-param networkSecurityGroupName string = 'SecGroupNet'
+param networkSecurityGroupName string = toLower('${prefix}-nsg')
 
 var publicIPAddressName = '${vmName}PublicIP'
 var networkInterfaceName = '${vmName}NetInt'
 var osDiskType = 'Standard_LRS'
 var subnetAddressPrefix = '10.1.0.0/24'
+var aksSubnetName = toLower('${prefix}-ask-subnet')
+var aksSubnetPrefix = '10.2.0.0/24'
 var addressPrefix = '10.1.0.0/16'
 var linuxConfiguration = {
   disablePasswordAuthentication: true
@@ -117,11 +122,21 @@ resource vnet 'Microsoft.Network/virtualNetworks@2021-05-01' = {
   }
 }
 
-resource subnet 'Microsoft.Network/virtualNetworks/subnets@2021-05-01' = {
+resource subnetvm 'Microsoft.Network/virtualNetworks/subnets@2021-05-01' = {
   parent: vnet
   name: subnetName
   properties: {
     addressPrefix: subnetAddressPrefix
+    privateEndpointNetworkPolicies: 'Enabled'
+    privateLinkServiceNetworkPolicies: 'Enabled'
+  }
+}
+
+resource subnetaks 'Microsoft.Network/virtualNetworks/subnets@2021-05-01' = {
+  parent: vnet
+  name: aksSubnetName
+  properties: {
+    addressPrefix: aksSubnetPrefix 
     privateEndpointNetworkPolicies: 'Enabled'
     privateLinkServiceNetworkPolicies: 'Enabled'
   }
@@ -183,3 +198,4 @@ resource vm 'Microsoft.Compute/virtualMachines@2021-11-01' = {
 output adminUsername string = adminUsername
 output hostname string = publicIP.properties.dnsSettings.fqdn
 output sshCommand string = 'ssh ${adminUsername}@${publicIP.properties.dnsSettings.fqdn}'
+output aksSubNetID string = subnetaks.id
