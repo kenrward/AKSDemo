@@ -39,10 +39,10 @@ az vm create `
   --admin-username azureuser `
   --generate-ssh-keys
 
-$prefix = "Eth"
+$prefix = "Ravens"
   az group create -n "${prefix}-RG" --location eastus
 
-  az deployment group create -n "${prefix}-Deployment" -g "${prefix}-RG" --template-file .\deploy.bicep 
+  az deployment group create -n "${prefix}-Deployment" -g "${prefix}-RG" --template-file .\deploy.bicep --paramerters @local.settings.json
 
 
 ## NEW
