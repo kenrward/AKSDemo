@@ -64,7 +64,7 @@ upload_backup() {
   CONTAINER_EXISTS=$?
   # set -e
   if [ "$CONTAINER_EXISTS" -gt "0" ]; then
-    az storage container create -n $AZURE_CONTAINER --auth-mode login
+    az storage container create -n $AZURE_CONTAINER --auth-mode login --public-access blob
   fi
 
   az storage blob upload -f $BACKUP_NAME.tgz -n $BACKUP_NAME.tgz -c $AZURE_CONTAINER  --auth-mode login
