@@ -14,6 +14,8 @@ sudo chown mongodb:mongodb /tmp/mongodb-27017.sock
 sudo service mongod restart
 # sudo systemctl status mongod
 
+# Update /etc/mongod.conf bindIp 0.0.0.0
+
 # Azure CLI
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
