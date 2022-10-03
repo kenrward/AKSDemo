@@ -1,27 +1,9 @@
-az group create --name myResourceGroup --location eastus
-
-az aks create -g myResourceGroup -n myAKSCluster `
---enable-managed-identity `
---node-count 1 `
---enable-addons monitoring `
---enable-msi-auth-for-monitoring  `
---generate-ssh-keys
-
-az aks install-cli
-
-az aks get-credentials --resource-group  --name myAKSCluster
-
-kubectl get nodes
-
-$vnet=az network vnet list --query "[?contains(addressSpace.addressPrefixes, '10.224.0.0/12')].name" -o tsv
-myResourceGroup
-az network vnet subnet list --resource-group myResourceGroup --vnet-name $vnet
-
 # private AKS
 # https://learn.microsoft.com/en-us/azure/aks/private-clusters
 
 # https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-cli#code-try-6
 # https://kubernetes.io/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/
+# https://learn.microsoft.com/en-us/azure/aks/configure-azure-cni
 
 # Error Lookup
 # https://komodor.com/learn/how-to-fix-createcontainerconfigerror-and-createcontainer-errors/
@@ -42,7 +24,7 @@ az vm create `
 $prefix = "Ravens"
   az group create -n "${prefix}-RG" --location eastus
 
-  az deployment group create -n "${prefix}-Deployment" -g "${prefix}-RG" --template-file .\deploy.bicep --paramerters @local.settings.json
+  az deployment group create -n "${prefix}-Deployment" -g "${prefix}-RG" --template-file .\deploy.bicep 
 
 
 ## NEW
@@ -55,4 +37,4 @@ az network vnet create `
     --subnet-name deAKSSubnet `
     --subnet-prefix 192.168.1.0/24
 
-$subnetID=(az network vnet subnet show --resource-group "${prefix}-RG" --vnet-name "aksd-vnet" --name deAKSSubnet --query id -o tsv)
+subnetID=$(az network vnet subnet show --resource-group "${prefix}-RG" --vnet-name "aksd-vnet" --name deAKSSubnet --query id -o tsv)
