@@ -36,7 +36,7 @@ MONGO_URI="mongodb://mongodbvm-u3jpv6vtjmm5s.eastus.cloudapp.azure.com:27017/"
 
 BACKUP_NAME="$FILENAME-$MONGO_DB-$DATETIME"
 BACKUP_FOLDER="/tmp/demoBackup/"
-AZURE_CONTAINER="newbackup"
+AZURE_CONTAINER="publicbackup"
 
 make_backup() {
 
