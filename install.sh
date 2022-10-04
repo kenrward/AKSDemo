@@ -1,5 +1,5 @@
 #!/bin/bash
-prefix="tri"
+prefix="five"
 
 az group create -n "${prefix}-RG" --location eastus
 

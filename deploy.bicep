@@ -74,30 +74,6 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2019-06-01' = {
   }
 }
 
-resource nic 'Microsoft.Network/networkInterfaces@2021-05-01' = {
-  name: networkInterfaceName
-  location: location
-  properties: {
-    ipConfigurations: [
-      {
-        name: 'ipconfig1'
-        properties: {
-          subnet: {
-            id: subnetvm.id
-          }
-          privateIPAllocationMethod: 'Dynamic'
-          publicIPAddress: {
-            id: publicIP.id
-          }
-        }
-      }
-    ]
-    networkSecurityGroup: {
-      id: nsg.id
-    }
-  }
-}
-
 resource nsg 'Microsoft.Network/networkSecurityGroups@2021-05-01' = {
   name: networkSecurityGroupName
   location: location
@@ -160,6 +136,37 @@ resource vnet 'Microsoft.Network/virtualNetworks@2021-05-01' = {
       }
     ]
   }
+  resource subnet1 'subnets' existing = {
+    name: subnetName
+  }
+
+  resource subnet2 'subnets' existing = {
+    name: aksSubnetName
+  }
+}
+
+resource nic 'Microsoft.Network/networkInterfaces@2021-05-01' = {
+  name: networkInterfaceName
+  location: location
+  properties: {
+    ipConfigurations: [
+      {
+        name: 'ipconfig1'
+        properties: {
+          subnet: {
+            id: vnet::subnet1.id
+          }
+          privateIPAllocationMethod: 'Dynamic'
+          publicIPAddress: {
+            id: publicIP.id
+          }
+        }
+      }
+    ]
+    networkSecurityGroup: {
+      id: nsg.id
+    }
+  }
 }
 
 resource publicIP 'Microsoft.Network/publicIPAddresses@2021-05-01' = {
@@ -221,6 +228,6 @@ resource vm 'Microsoft.Compute/virtualMachines@2021-11-01' = {
 output adminUsername string = adminUsername
 output hostname string = publicIP.properties.dnsSettings.fqdn
 output sshCommand string = 'ssh ${adminUsername}@${publicIP.properties.dnsSettings.fqdn}'
-output aksSubNetID string = subnetaks.id
+output aksSubNetID string = vnet::subnet2.id
 output managedID string = vm.identity.principalId
 output strStrAccount string = storageAccountName
