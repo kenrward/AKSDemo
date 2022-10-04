@@ -1,5 +1,5 @@
 #!/bin/bash
-prefix="six"
+prefix="sev"
 
 az group create -n "${prefix}-RG" --location eastus
 
@@ -9,6 +9,8 @@ az deployment group create -n "${prefix}-Deployment"  \
   --parameters @local.settings.json \
   --parameters prefix=$prefix
 
+
+########################### MOVED TO BICEP
 az deployment group show \
   -g "${prefix}-RG" \
   -n "${prefix}-Deployment" \
@@ -31,7 +33,7 @@ az aks create \
     --dns-service-ip 10.1.3.10 \
     --service-cidr 10.1.3.0/24 \
     --generate-ssh-keys
-
+########################### MOVED TO BICEP
 az aks get-credentials \
 --resource-group "${prefix}-RG" \
 --name "${prefix}-aksCluster" 

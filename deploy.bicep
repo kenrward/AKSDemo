@@ -36,6 +36,19 @@ param location string = resourceGroup().location
 @description('The size of the VM')
 param vmSize string = 'Standard_B2s'
 
+@description('The size of the AKS Virtual Machine.')
+param agentVMSize string = 'Standard_D2s_v3'
+
+@minValue(1)
+@maxValue(50)
+@description('The number of nodes for the cluster.')
+param agentCount int = 1
+
+@minValue(0)
+@maxValue(1023)
+@description('Disk size (in GB) to provision for each of the agent pool nodes. This value ranges from 0 to 1023. Specifying 0 will apply the default disk size for that agentVMSize.')
+param osDiskSizeGB int = 0
+
 @description('Name of the VNET')
 param virtualNetworkName string = toLower('${prefix}-vnet')
 
@@ -236,6 +249,9 @@ resource aksCluster 'Microsoft.ContainerService/managedClusters@2022-07-02-previ
     agentPoolProfiles: [
       {
         name: 'agentpool'
+        osDiskSizeGB: osDiskSizeGB
+        count: agentCount
+        vmSize: agentVMSize
         osType: 'Linux'
         mode: 'System'
         vnetSubnetID: vnet::subnet2.id
