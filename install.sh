@@ -1,12 +1,13 @@
 #!/bin/bash
-prefix="croc"
+prefix="tri"
 
 az group create -n "${prefix}-RG" --location eastus
 
 az deployment group create -n "${prefix}-Deployment"  \
   -g "${prefix}-RG" \
   --template-file deploy.bicep \
-  --parameters @local.settings.json 
+  --parameters @local.settings.json \
+  --parameters prefix=$prefix
 
 az deployment group show \
   -g "${prefix}-RG" \

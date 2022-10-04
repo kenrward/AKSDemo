@@ -139,28 +139,26 @@ resource vnet 'Microsoft.Network/virtualNetworks@2021-05-01' = {
     addressSpace: {
       addressPrefixes: [
         addressPrefix
-      ]
+      ] 
     }
-  }
-}
-
-resource subnetvm 'Microsoft.Network/virtualNetworks/subnets@2021-05-01' = {
-  parent: vnet
-  name: subnetName
-  properties: {
-    addressPrefix: subnetAddressPrefix
-    privateEndpointNetworkPolicies: 'Enabled'
-    privateLinkServiceNetworkPolicies: 'Enabled'
-  }
-}
-
-resource subnetaks 'Microsoft.Network/virtualNetworks/subnets@2021-05-01' = {
-  parent: vnet
-  name: aksSubnetName
-  properties: {
-    addressPrefix: aksSubnetPrefix 
-    privateEndpointNetworkPolicies: 'Enabled'
-    privateLinkServiceNetworkPolicies: 'Enabled'
+    subnets: [
+      {
+        name: subnetName
+        properties: {
+          addressPrefix: subnetAddressPrefix
+          privateEndpointNetworkPolicies: 'Enabled'
+          privateLinkServiceNetworkPolicies: 'Enabled'
+        }
+      }
+      {
+        name: aksSubnetName
+        properties: {
+          addressPrefix: aksSubnetPrefix 
+          privateEndpointNetworkPolicies: 'Enabled'
+          privateLinkServiceNetworkPolicies: 'Enabled'
+        }
+      }
+    ]
   }
 }
 
