@@ -48,9 +48,10 @@ param networkSecurityGroupName string = toLower('${prefix}-nsg')
 var storageAccountName = '${substring(toLower(prefix),0,length(prefix))}${uniqueString(resourceGroup().id)}' 
 var publicIPAddressName = '${vmName}PublicIP'
 var networkInterfaceName = '${vmName}NetInt'
+var aksClusterName = '${prefix}-aksCluster' 
 var osDiskType = 'Standard_LRS'
 var subnetAddressPrefix = '10.1.0.0/24'
-var aksSubnetName = toLower('${prefix}-ask-subnet')
+var aksSubnetName = toLower('${prefix}-aks-subnet')
 var aksSubnetPrefix = '10.1.2.0/24'
 var addressPrefix = '10.1.0.0/16'
 var linuxConfiguration = {
@@ -221,6 +222,40 @@ resource vm 'Microsoft.Compute/virtualMachines@2021-11-01' = {
       adminUsername: adminUsername
       adminPassword: adminPasswordOrKey
       linuxConfiguration: ((authenticationType == 'password') ? null : linuxConfiguration)
+    }
+  }
+}
+
+resource aksCluster 'Microsoft.ContainerService/managedClusters@2022-07-02-preview' = {
+  name: aksClusterName
+  location: location
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    agentPoolProfiles: [
+      {
+        name: 'agentpool'
+        osType: 'Linux'
+        mode: 'System'
+        vnetSubnetID: vnet::subnet2.id
+      }
+    ]
+    linuxProfile: {
+      adminUsername: adminUsername
+      ssh: {
+        publicKeys: [
+          {
+            keyData: adminPasswordOrKey
+          }
+        ]
+      }
+    }
+    networkProfile:{
+      serviceCidr: '10.1.3.0/24'
+      dnsServiceIP:'10.1.3.10'
+      dockerBridgeCidr:'172.17.0.1/16'
+      networkPlugin: 'azure'
     }
   }
 }

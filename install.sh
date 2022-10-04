@@ -1,5 +1,5 @@
 #!/bin/bash
-prefix="five"
+prefix="six"
 
 az group create -n "${prefix}-RG" --location eastus
 
@@ -19,15 +19,14 @@ vnet_sub_id=$(az deployment group show \
   -n "${prefix}-Deployment" \
   --query properties.outputs.aksSubNetID.value -o tsv)
 
+echo $vnet_sub_id
+
 
 az aks create \
     --resource-group "${prefix}-RG"  \
     --name "${prefix}-aksCluster"  \
     --network-plugin azure \
-    --vnet-subnet-id $(az deployment group show \
-        -g "${prefix}-RG" \
-        -n "${prefix}-Deployment" \
-        --query properties.outputs.aksSubNetID.value -o tsv) \
+    --vnet-subnet-id $vnet_sub_id \
     --docker-bridge-address 172.17.0.1/16 \
     --dns-service-ip 10.1.3.10 \
     --service-cidr 10.1.3.0/24 \
