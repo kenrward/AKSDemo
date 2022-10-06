@@ -7,21 +7,14 @@ param vmName string = 'mongodbVM'
 @description('Username for the Virtual Machine.')
 param adminUsername string = 'mntgoat'
 
-@description('Type of authentication to use on the Virtual Machine. SSH key is recommended.')
-@allowed([
-  'sshPublicKey'
-  'password'
-])
-param authenticationType string = 'sshPublicKey'
-
-@description('SSH Key or password for the Virtual Machine. SSH key is recommended.')
+@description('SSH Key for the Virtual Machine.')
 @secure()
 param adminPasswordOrKey string
 
 @description('Unique DNS Name for the Public IP used to access the Virtual Machine.')
 param dnsLabelPrefix string = toLower('${vmName}-${uniqueString(resourceGroup().id)}')
 
-@description('The Ubuntu version for the VM. This will pick a fully patched image of this given Ubuntu version.')
+@description('The Ubuntu version for the VM.')
 @allowed([
   '12.04.5-LTS'
   '14.04.5-LTS'
@@ -58,6 +51,7 @@ param subnetName string = toLower('${prefix}-vm-subnet')
 @description('Name of the Network Security Group')
 param networkSecurityGroupName string = toLower('${prefix}-nsg')
 
+var authenticationType = 'sshPublicKey'
 var storageAccountName = '${substring(toLower(prefix),0,length(prefix))}${uniqueString(resourceGroup().id)}' 
 var publicIPAddressName = '${vmName}PublicIP'
 var networkInterfaceName = '${vmName}NetInt'
@@ -246,6 +240,7 @@ resource aksCluster 'Microsoft.ContainerService/managedClusters@2022-07-02-previ
     type: 'SystemAssigned'
   }
   properties: {
+    dnsPrefix: prefix
     agentPoolProfiles: [
       {
         name: 'agentpool'

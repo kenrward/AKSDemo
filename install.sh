@@ -1,5 +1,5 @@
 #!/bin/bash
-prefix="sev"
+prefix="q34"
 
 az group create -n "${prefix}-RG" --location eastus
 
