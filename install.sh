@@ -1,5 +1,5 @@
 #!/bin/bash
-prefix="nov"
+prefix="apr"
 
 az group create -n "${prefix}-RG" --location eastus
 
@@ -19,6 +19,10 @@ strAcct=$(az deployment group show \
   -n "${prefix}-Deployment" \
   --query properties.outputs.strStrAccount.value -o tsv)
 
+hostName=$(az deployment group show \
+  -g "${prefix}-RG" \
+  -n "${prefix}-Deployment" \
+  --query properties.outputs.hostname.value -o tsv)
 
 
 az role assignment create \
@@ -51,3 +55,12 @@ sshCommand=$(az deployment group show \
   --query properties.outputs.sshCommand.value -o tsv)
 
 echo $sshCommand
+
+cd ..
+cmd1="scp postDepoly.sh mntgoat@"
+cmd2=$hostName
+cmd3=":/home/user/mntgoat"
+cmd4=$cmd1$cmd2$cmd3
+echo "$cmd4"
+
+
