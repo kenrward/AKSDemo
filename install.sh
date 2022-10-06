@@ -1,9 +1,5 @@
 #!/bin/bash
-<<<<<<< HEAD
-prefix="q34"
-=======
 prefix="oct"
->>>>>>> 5f5112a5141c6b2e3109b66b4d6ee5046d394b55
 
 az group create -n "${prefix}-RG" --location eastus
 
