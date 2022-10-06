@@ -1,5 +1,5 @@
 #!/bin/bash
-prefix="oct"
+prefix="nov"
 
 az group create -n "${prefix}-RG" --location eastus
 
@@ -9,6 +9,23 @@ az deployment group create -n "${prefix}-Deployment"  \
   --parameters @local.settings.json \
   --parameters prefix=$prefix
 
+MI=$(az deployment group show \
+  -g "${prefix}-RG" \
+  -n "${prefix}-Deployment" \
+  --query properties.outputs.managedID.value -o tsv)
+
+strAcct=$(az deployment group show \
+  -g "${prefix}-RG" \
+  -n "${prefix}-Deployment" \
+  --query properties.outputs.strStrAccount.value -o tsv)
+
+
+
+az role assignment create \
+    --role "Storage Blob Data Contributor" \
+    --assignee-object-id $MI \
+    --assignee-principal-type ServicePrincipal \
+    --scope "/subscriptions/76a7f190-b557-40f6-a02e-96df8d0b7fa6/resourceGroups/${prefix}-RG/providers/Microsoft.Storage/storageAccounts/$strAcct/blobServices/default/containers/publicbackup"
 
 az aks get-credentials \
 --resource-group "${prefix}-RG" \
@@ -23,3 +40,14 @@ export KUBECONFIG=/mnt/c/Users/kenrw/.kube/config
 cd k8-wordpressapp
 
 kubectl apply -k ./
+
+kubectl get services
+
+# VM backup
+
+sshCommand=$(az deployment group show \
+  -g "${prefix}-RG" \
+  -n "${prefix}-Deployment" \
+  --query properties.outputs.sshCommand.value -o tsv)
+
+echo $sshCommand

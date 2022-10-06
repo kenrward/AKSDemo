@@ -80,6 +80,21 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2019-06-01' = {
   sku: {
     name: 'Standard_LRS'
   }
+  properties:{
+    allowBlobPublicAccess: true
+  }
+}
+resource storageBlobService 'Microsoft.Storage/storageAccounts/blobServices@2022-05-01' = {
+  name: 'default'
+  parent: storageAccount
+}
+
+resource storageBlobContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2022-05-01' = {
+  name: 'publicbackup'
+  parent: storageBlobService
+  properties: {
+    publicAccess: 'Blob'
+  }
 }
 
 resource nsg 'Microsoft.Network/networkSecurityGroups@2021-05-01' = {

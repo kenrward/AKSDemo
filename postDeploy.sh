@@ -1,5 +1,21 @@
 #!/bin/bash
-export AZURE_STORAGE_ACCOUNT=qtru3jpv6vtjmm5s
+
+## defaults
+strorageAccount="abcdefgaccount"
+mongoHost="localhost"
+ 
+while getopts ":s:m:" opt; do
+  case $opt in
+    s) strorageAccount="$OPTARG"
+    ;;
+    m) mongoHost="$OPTARG"
+    ;;
+    \?) echo "Invalid option -$OPTARG" >&2
+    ;;
+  esac
+done
+
+export AZURE_STORAGE_ACCOUNT=$strorageAccount
 
 # MongoDB Install
 echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/4.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.2.list
@@ -30,9 +46,9 @@ az login --identity
 DATETIME=`date +"%Y-%m-%d-%H-%M-%S"`
 
 FILENAME="bac"
-MONGO_HOST="mongodbvm-u3jpv6vtjmm5s.eastus.cloudapp.azure.com"
+MONGO_HOST=$mongoHost
 MONGO_DB="example_db"
-MONGO_URI="mongodb://mongodbvm-u3jpv6vtjmm5s.eastus.cloudapp.azure.com:27017/"
+MONGO_URI="mongodb://$MONGO_HOST:27017/"
 
 BACKUP_NAME="$FILENAME-$MONGO_DB-$DATETIME"
 BACKUP_FOLDER="/tmp/demoBackup/"
