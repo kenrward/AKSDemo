@@ -1,5 +1,5 @@
 #!/bin/bash
-prefix="rex"
+prefix="rbac"
 
 az group create -n "${prefix}-RG" --location eastus
 
