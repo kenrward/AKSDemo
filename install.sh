@@ -56,11 +56,12 @@ sshCommand=$(az deployment group show \
 
 echo $sshCommand
 
+mod_hostname="mntgoat@$hostName /home/mntgoat"
+colonPATHS=$(echo "$mod_hostname" | sed -r 's/\s+/:/g')
+
 cd ..
-cmd1="scp postDepoly.sh mntgoat@"
-cmd2=$hostName
-cmd3=":/home/user/mntgoat"
-cmd4=$cmd1$cmd2$cmd3
-echo "$cmd4"
+
+scp postDeploy.sh $colonPATHS
+
 
 
