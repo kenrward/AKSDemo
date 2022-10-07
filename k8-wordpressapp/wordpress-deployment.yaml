@@ -65,3 +65,4 @@ spec:
       - name: wordpress-persistent-storage
         persistentVolumeClaim:
           claimName: wp-pv-claim
+      serviceAccountName: wp-cluster-admin

@@ -5,10 +5,9 @@ Run install.sh to deploy infrastructure.  This will deploy a Bicep file that wil
 
 
 # References  
-#### private AKS
+#### AKS
  - https://learn.microsoft.com/en-us/azure/aks/private-clusters
-
-- https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-cli#code-try-6
+ - https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-cli#code-try-6
  - https://kubernetes.io/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/
  - https://learn.microsoft.com/en-us/azure/aks/configure-azure-cni
 
@@ -17,4 +16,5 @@ Run install.sh to deploy infrastructure.  This will deploy a Bicep file that wil
 
 #### Mongo DB
  - https://www.mongodb.com/docs/v4.2/tutorial/install-mongodb-on-ubuntu/
+ - https://stackoverflow.com/questions/4881208/how-to-secure-mongodb-with-username-and-password
 
