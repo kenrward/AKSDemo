@@ -26,6 +26,7 @@ sudo systemctl start mongod
 sudo chown -R mongodb:mongodb /var/lib/mongodb
 sudo chown mongodb:mongodb /tmp/mongodb-27017.sock    
 # Mongo Open BindIp
+sudo systemctl stop mongod
 sudo sed 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf
 # Mongo Create data folder, set perms
 sudo mkdir -p /data/db/
