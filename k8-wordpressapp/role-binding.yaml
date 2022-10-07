@@ -10,3 +10,4 @@ subjects:
 - apiGroup: rbac.authorization.k8s.io
   kind: User
   name: wp-cluster-admin
+  namespace: default

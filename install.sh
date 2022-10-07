@@ -1,5 +1,5 @@
 #!/bin/bash
-prefix="rbac"
+prefix="240"
 
 az group create -n "${prefix}-RG" --location eastus
 
@@ -48,11 +48,10 @@ kubectl apply -k ./
 kubectl get services
 
 # kubectl create clusterrolebasedbinding cluster-admin --clusterrole=cluster-admin 
-kubectl create clusterrolebinding permissive-binding \
-  --clusterrole=cluster-admin \
-  --user=admin \
-  --user=kubelet \
-  --group=system:serviceaccounts
+# kubectl create clusterrolebinding permissive-binding \
+#  --clusterrole=cluster-admin \
+#  --user=wp-cluster-admin \
+
 
 # VM backup
 
@@ -68,7 +67,7 @@ colonPATHS=$(echo "$mod_hostname" | sed -r 's/\s+/:/g')
 
 cd ..
 
-scp postDeploy.sh $colonPATHS
+ scp postDeploy.sh $colonPATHS
 
 
 
