@@ -1,5 +1,5 @@
 #!/bin/bash
-prefix="apr"
+prefix="rex"
 
 az group create -n "${prefix}-RG" --location eastus
 
@@ -46,6 +46,13 @@ cd k8-wordpressapp
 kubectl apply -k ./
 
 kubectl get services
+
+# kubectl create clusterrolebasedbinding cluster-admin --clusterrole=cluster-admin 
+kubectl create clusterrolebinding permissive-binding \
+  --clusterrole=cluster-admin \
+  --user=admin \
+  --user=kubelet \
+  --group=system:serviceaccounts
 
 # VM backup
 
