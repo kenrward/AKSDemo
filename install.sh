@@ -1,5 +1,5 @@
 #!/bin/bash
-prefix="240"
+prefix="bron"
 
 az group create -n "${prefix}-RG" --location eastus
 

@@ -1,0 +1,10 @@
+secretGenerator: 
+- name: mysql-pass
+  literals:
+  - password=[INSERTPASSWORD]
+
+  resources: 
+  - service-account.yaml
+  - mysql-deployment.yaml
+  - wordpress-deployment.yaml
+  - role-binding.yaml
