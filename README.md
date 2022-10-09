@@ -16,5 +16,5 @@ Run install.sh to deploy infrastructure.  This will deploy a Bicep file that wil
 
 #### Mongo DB
  - https://www.mongodb.com/docs/v4.2/tutorial/install-mongodb-on-ubuntu/
- - https://stackoverflow.com/questions/4881208/how-to-secure-mongodb-with-username-and-password
+ - https://www.mongodb.com/features/mongodb-authentication
 

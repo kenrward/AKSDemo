@@ -1,5 +1,5 @@
 #!/bin/bash
-prefix="bron"
+prefix="dev"
 
 az group create -n "${prefix}-RG" --location eastus
 
@@ -65,9 +65,14 @@ echo $sshCommand
 mod_hostname="mntgoat@$hostName /home/mntgoat"
 colonPATHS=$(echo "$mod_hostname" | sed -r 's/\s+/:/g')
 
-cd ..
+cd ../postDeploy
 
- scp postDeploy.sh $colonPATHS
+scp postDeploy.sh $colonPATHS
+
+$mod_hostname="mntgoat@$hostName /etc"
+$colonPATHS=$(echo "$mod_hostname" | sed -r 's/\s+/:/g')
+
+scp mongod.conf $colonPATHS
 
 
 
