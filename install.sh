@@ -3,6 +3,11 @@ prefix="dev"
 
 az group create -n "${prefix}-RG" --location eastus
 
+# az acr create -g "${prefix}-RG" \
+#   -n "${prefix}acr1011" --sku Basic
+
+# az aks update -n "${prefix}-aksCluster" -g "${prefix}-RG" --attach-acr "${prefix}acr1011"
+
 az deployment group create -n "${prefix}-Deployment"  \
   -g "${prefix}-RG" \
   --template-file deploy.bicep \
@@ -48,9 +53,9 @@ kubectl apply -k ./
 kubectl get services
 
 # kubectl create clusterrolebasedbinding cluster-admin --clusterrole=cluster-admin 
-# kubectl create clusterrolebinding permissive-binding \
-#  --clusterrole=cluster-admin \
-#  --user=wp-cluster-admin \
+ kubectl create clusterrolebinding permissive-binding \
+  --clusterrole=cluster-admin \
+  --serviceaccount=default:wp-cluster-admin 
 
 
 # VM backup
