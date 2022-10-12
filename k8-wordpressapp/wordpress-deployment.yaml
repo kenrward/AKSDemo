@@ -50,10 +50,10 @@ spec:
         resources:
           requests:
             memory: "64Mi"
-            cpu: "250m"
+            cpu: "2500m"
           limits:
-            memory: "128Mi"
-            cpu: "500m"
+            memory: "1Gi"
+            cpu: "2500m"
         env:
         - name: WORDPRESS_DB_HOST
           value: wordpress-mysql
