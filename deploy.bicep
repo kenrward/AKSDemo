@@ -247,6 +247,28 @@ resource vm 'Microsoft.Compute/virtualMachines@2021-11-01' = {
     }
   }
 }
+resource vmScript 'Microsoft.Compute/virtualMachines/runCommands@2022-08-01' = {
+  name: 'testScript'
+  location: location
+  parent: vm
+  properties: {
+    parameters: [
+      {
+        name: 's'
+        value: storageAccountName
+      }
+      {
+        name: 'm'
+        value: publicIP.properties.dnsSettings.fqdn
+      }
+    ]
+  source:{
+    script:'postDeploy.sh'
+    scriptUri: 'https://raw.githubusercontent.com/kenrward/AKSDemo/main/postDeploy/postDeploy.sh'
+ }
+
+  }
+}
 
 resource aksCluster 'Microsoft.ContainerService/managedClusters@2022-07-02-preview' = {
   name: aksClusterName

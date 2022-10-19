@@ -1,5 +1,5 @@
 #!/bin/bash
-prefix="dev"
+prefix="d4v"
 
 az group create -n "${prefix}-RG" --location eastus
 
@@ -29,20 +29,20 @@ hostName=$(az deployment group show \
   -n "${prefix}-Deployment" \
   --query properties.outputs.hostname.value -o tsv)
 
-subID=$(az account show --query id --output tsv)
+subID=$(az account show --query id -o tsv)
 
 
 az role assignment create \
     --role "Storage Blob Data Contributor" \
     --assignee-object-id $MI \
     --assignee-principal-type ServicePrincipal \
-    --scope "/subscriptions/$subID/resourceGroups/${prefix}-RG/providers/Microsoft.Storage/storageAccounts/$strAcct/blobServices/default/containers/publicbackup"
+    --scope "/subscriptions/76a7f190-b557-40f6-a02e-96df8d0b7fa6/resourceGroups/${prefix}-RG/providers/Microsoft.Storage/storageAccounts/$strAcct/blobServices/default/containers/publicbackup"
 
 az aks get-credentials \
 --resource-group "${prefix}-RG" \
 --name "${prefix}-aksCluster" 
 
-export KUBECONFIG=/mnt/c/Users/kenrw/.kube/config 
+#export KUBECONFIG=/mnt/c/Users/kenrw/.kube/config 
 
 # https://kubernetes.io/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/
 
